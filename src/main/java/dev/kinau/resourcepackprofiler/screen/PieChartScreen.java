@@ -1,13 +1,8 @@
 package dev.kinau.resourcepackprofiler.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.ARGB;
-import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfileResults;
 import net.minecraft.util.profiling.ResultField;
 
@@ -52,46 +47,8 @@ public class PieChartScreen extends Screen {
         guiGraphics.fill(startX - 5, startY - 5, endX + 5, endY + 5 + extraHeight, -1873784752);
         int pieStartY = startY + extraHeight;
 
-        guiGraphics.drawSpecial((multiBufferSource) -> {
-            double currentPercentage = 0.0F;
+        guiGraphics.submitProfilerChartRenderState(list, startX, pieStartY, endX, endY);
 
-            for (ResultField resultField : list) {
-                int fanVertexCount = Mth.floor(resultField.percentage / (double) 4.0F) + 1;
-                VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.debugTriangleFan());
-                int fanColor = ARGB.opaque(resultField.getColor());
-                int fanShadowColor = ARGB.multiply(fanColor, -8355712);
-                PoseStack.Pose pose = guiGraphics.pose().last();
-                vertexConsumer.addVertex(pose, (float) midX, (float) pieStartY, 10.0F).setColor(fanColor);
-
-                for (int i = fanVertexCount; i >= 0; i--) {
-                    float f = (float) ((currentPercentage + resultField.percentage * (double) i / (double) fanVertexCount) * (double) ((float) Math.PI * 2F) / (double) 100.0F);
-                    float g = Mth.sin(f) * 105.0F;
-                    float h = Mth.cos(f) * 105.0F * 0.5F;
-                    vertexConsumer.addVertex(pose, (float) midX + g, (float) pieStartY - h, 10.0F).setColor(fanColor);
-                }
-
-                // shadow does not work idk
-//                vertexConsumer = multiBufferSource.getBuffer(RenderType.debugQuads());
-//
-//                for (int i = fanVertexCount; i > 0; i--) {
-//                    float f = (float) ((currentPercentage + resultField.percentage * (double) i / (double) fanVertexCount) * (double) ((float) Math.PI * 2F) / (double) 100.0F);
-//                    float g = Mth.sin(f) * 105.0F;
-//                    float h = Mth.cos(f) * 105.0F * 0.5F;
-//                    float v = (float) ((currentPercentage + resultField.percentage * (double) (i - 1) / (double) fanVertexCount) * (double) ((float) Math.PI * 2F) / (double) 100.0F);
-//                    float w = Mth.sin(v) * 105.0F;
-//                    float q = Mth.cos(v) * 105.0F * 0.5F;
-//                    if (!((h + q) / 2.0F > 0.0F)) {
-//                        vertexConsumer.addVertex(pose, (float) midX + g, (float) w - h, 10.0F).setColor(fanShadowColor);
-//                        vertexConsumer.addVertex(pose, (float) midX + g, (float) w - h + 10.0F, 10.0F).setColor(fanShadowColor);
-//                        vertexConsumer.addVertex(pose, (float) midX + w, (float) w - q + 10.0F, 10.0F).setColor(fanShadowColor);
-//                        vertexConsumer.addVertex(pose, (float) midX + w, (float) w - q, 10.0F).setColor(fanShadowColor);
-//                    }
-//                }
-
-                currentPercentage += resultField.percentage;
-            }
-
-        });
         DecimalFormat decimalFormat = new DecimalFormat("##0.00");
         decimalFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ROOT));
         guiGraphics.drawCenteredString(this.font, this.title, midX, pieStartY - 80, 0xFFFFFF);

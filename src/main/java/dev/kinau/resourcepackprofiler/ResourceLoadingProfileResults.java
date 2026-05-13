@@ -2,7 +2,6 @@ package dev.kinau.resourcepackprofiler;
 
 import dev.kinau.resourcepackprofiler.expander.ReloadStateExpander;
 import net.minecraft.client.PeriodicNotificationManager;
-import net.minecraft.client.gui.GuiSpriteManager;
 import net.minecraft.client.gui.font.FontManager;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.particle.ParticleEngine;
@@ -52,7 +51,6 @@ public class ResourceLoadingProfileResults implements ProfileResults {
         String name = reloadState.name();
         Class<?> clazz = getClass(GameRenderer.class.getPackageName() + "." + name);
         if (clazz == null) clazz = getClass(LanguageManager.class.getPackageName() + "." + name);
-        if (clazz == null) clazz = getClass(LanguageManager.class.getPackageName() + "." + name);
         if (clazz == null) clazz = getClass(TextureManager.class.getPackageName() + "." + name);
         if (clazz == null) clazz = getClass(SoundManager.class.getPackageName() + "." + name);
         if (clazz == null) clazz = getClass(SplashManager.class.getPackageName() + "." + name);
@@ -63,7 +61,6 @@ public class ResourceLoadingProfileResults implements ProfileResults {
         if (clazz == null) clazz = getClass(ItemRenderer.class.getPackageName() + "." + name);
         if (clazz == null) clazz = getClass(ParticleEngine.class.getPackageName() + "." + name);
         if (clazz == null) clazz = getClass(BlockRenderDispatcher.class.getPackageName() + "." + name);
-        if (clazz == null) clazz = getClass(GuiSpriteManager.class.getPackageName() + "." + name);
         if (clazz == null) clazz = getClass(PeriodicNotificationManager.class.getPackageName() + "." + name);
 
         double percent = (sumMillis / (double)totalTime) * 100.0;
@@ -98,8 +95,8 @@ public class ResourceLoadingProfileResults implements ProfileResults {
             return "Entity Model Set";
         else if (clazz == BlockEntityRenderDispatcher.class)
             return "Block Entity Renderer";
-        else if (clazz == MapDecorationTextureManager.class)
-            return "Map Decoration Texture Manager";
+        else if (clazz == MapTextureManager.class)
+            return "Map Texture Manager";
         else if (clazz == ItemRenderer.class)
             return "Item Renderer";
         else if (clazz == BlockRenderDispatcher.class)
@@ -110,12 +107,6 @@ public class ResourceLoadingProfileResults implements ProfileResults {
             return "Glowing/Transparency Shader Loader";
         else if (clazz == ParticleEngine.class)
             return "Particle Engine";
-        else if (clazz == PaintingTextureManager.class)
-            return "Painting Texture Manager";
-        else if (clazz == MobEffectTextureManager.class)
-            return "Mob Effect Texture Manager";
-        else if (clazz == GuiSpriteManager.class)
-            return "Gui Sprite Manager";
         else if (clazz == GpuWarnlistManager.class)
             return "Gpu Warnlist Manager";
         else if (clazz == PeriodicNotificationManager.class)
@@ -124,6 +115,10 @@ public class ResourceLoadingProfileResults implements ProfileResults {
             return "Equipment Asset Manager";
         else if (clazz == CloudRenderer.class)
             return "Cloud Renderer";
+        else if (clazz == WaypointStyleManager.class)
+            return "Waypoint Style Manager";
+        else if (clazz == DryFoliageColorReloadListener.class)
+            return "Dry Foliage Color Reload Listener";
 
         else if (clazz != null)
             return clazz.getName();

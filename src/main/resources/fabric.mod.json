@@ -26,11 +26,12 @@
 		"resourcepackprofiler.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.16.9",
+		"fabricloader": "*",
 		"minecraft": ">=1.21.2",
 		"java": ">=21",
 		"fabric-api": "*",
-		"cloth-config": ">=16.0.141"
+		"cloth-config": ">=16.0.141",
+		"minecraft": "${minecraft_version_dependency}"
 	},
 	"accessWidener": "resourcepackprofiler.accesswidener"
 }
